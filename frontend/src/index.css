@@ -1,0 +1,265 @@
+:root {
+  --rose: #c98f8f;
+  --rose-dark: #8f565b;
+  --rose-light: #ecd3d1;
+  --ash: #6b6663;
+  --ash-light: #d8d4d0;
+  --cream: #f8f1e7;
+  --text: #3d3735;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+}
+
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: var(--rose-light);
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.app-name {
+  margin: 0 0 24px;
+  color: var(--rose-dark);
+}
+
+.sidebar a {
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.sidebar a.active {
+  background: var(--cream);
+  font-weight: 700;
+}
+
+main {
+  flex: 1;
+  padding: 32px 40px;
+}
+
+.task-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.task-form input[type="text"] {
+  flex: 1;
+  min-width: 200px;
+}
+
+.task-form input,
+.task-form select {
+  padding: 10px 12px;
+  border: 1px solid var(--ash-light);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+}
+
+.btn {
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--rose-dark);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filter {
+  padding: 8px 16px;
+  border: 1px solid var(--ash-light);
+  border-radius: 20px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.filter.active {
+  background: var(--rose);
+  border-color: var(--rose);
+  color: #fff;
+}
+
+.task-list {
+  background: #fff;
+  border: 1px solid var(--ash-light);
+  border-radius: 16px;
+  padding: 8px 20px;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rose-light);
+}
+
+.task:last-child {
+  border-bottom: 0;
+}
+
+.task-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.task-date {
+  font-size: 13px;
+  color: var(--ash);
+}
+
+.task.done .task-title {
+  text-decoration: line-through;
+  color: var(--ash);
+}
+
+.chip {
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.chip-university {
+  background: var(--ash-light);
+}
+
+.chip-career {
+  background: #e6e2de;
+}
+
+.chip-shizelle {
+  background: var(--rose-light);
+  color: #6e3f44;
+}
+
+.delete {
+  border: 0;
+  background: none;
+  color: var(--ash);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.empty {
+  color: var(--ash);
+  padding: 12px 0;
+}
+
+.week-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 8px 0 12px;
+}
+
+.week-scroll {
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.day-card {
+  background: #fff;
+  border: 1px solid var(--ash-light);
+  border-radius: 16px;
+  padding: 14px;
+  min-height: 220px;
+}
+
+.day-card.today {
+  border: 2px solid var(--rose-dark);
+}
+
+.day-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.day-name {
+  font-weight: 700;
+}
+
+.day-num {
+  color: var(--ash);
+}
+
+.day-times {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--ash);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--rose-light);
+}
+
+.mini-task {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.mini-task.done span {
+  text-decoration: line-through;
+  color: var(--ash);
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 6px;
+}
+
+.dot-university {
+  background: var(--ash);
+}
+
+.dot-career {
+  background: var(--ash-light);
+  border: 1px solid var(--ash);
+}
+
+.dot-shizelle {
+  background: var(--rose-dark);
+}
