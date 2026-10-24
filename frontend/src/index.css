@@ -263,3 +263,194 @@ main {
 .dot-shizelle {
   background: var(--rose-dark);
 }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid var(--ash-light);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--ash);
+}
+
+.status-select {
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 20px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.status-applied {
+  background: var(--ash-light);
+  color: var(--text);
+}
+
+.status-interview {
+  background: var(--rose-light);
+  color: #6e3f44;
+}
+
+.status-offer {
+  background: var(--rose-dark);
+  color: #fff;
+}
+
+.status-rejected {
+  background: #e6e2de;
+  color: var(--ash);
+}
+
+.chart-card {
+  margin-bottom: 32px;
+}
+
+.chart {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.chart-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--ash);
+}
+
+.chart-track {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.chart-bar {
+  width: 100%;
+  max-width: 44px;
+  background: var(--rose);
+  border-radius: 8px 8px 0 0;
+}
+
+.chart-col.today .chart-bar {
+  background: var(--rose-dark);
+}
+
+.chart-col.today {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.cat-row {
+  margin-bottom: 16px;
+}
+
+.cat-row:last-child {
+  margin-bottom: 0;
+}
+
+.cat-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.subtitle {
+  margin: 4px 0 24px;
+  color: var(--ash);
+}
+
+.goal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.goal-card {
+  background: #fff;
+  border: 1px solid var(--ash-light);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.goal-label {
+  font-size: 14px;
+  color: var(--ash);
+}
+
+.goal-value {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 6px 0 12px;
+}
+
+.goal-value span {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--ash);
+}
+
+.bar {
+  height: 10px;
+  background: var(--ash-light);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s;
+}
+
+.goal-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.mini-btn {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--ash-light);
+  border-radius: 10px;
+  background: var(--cream);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.mini-btn:hover {
+  background: var(--rose-light);
+}
+
+.section-title {
+  font-size: 18px;
+  margin: 32px 0 12px;
+}
+
+.section-title {
+  margin-top: 32px;
+}
