@@ -470,6 +470,27 @@ main {
   gap: 8px;
 }
 
+.backup-card .goal-label {
+  line-height: 1.5;
+}
+
+.backup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.backup-actions .btn,
+.backup-actions .mini-btn {
+  min-height: 44px;
+}
+
+.backup-note {
+  margin: 12px 0 0;
+  color: var(--rose-dark);
+}
+
 @media (max-width: 768px) {
   .layout {
     flex-direction: column;

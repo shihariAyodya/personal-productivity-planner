@@ -1,4 +1,6 @@
 import useLocalStorage from "../hooks/useLocalStorage";
+import BackupCard from "../components/BackupCard";
+
 import {
   CATEGORIES,
   APPLICATION_STATUSES,
@@ -189,6 +191,10 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
+      <h2 className="section-title">Backup</h2>
+      <BackupCard />
     </div>
+
+      
   );
 }
