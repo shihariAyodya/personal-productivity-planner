@@ -11,13 +11,22 @@ export default function Internships() {
   const [dateApplied, setDateApplied] = useState(todayString());
   const [notes, setNotes] = useState("");
   const [filter, setFilter] = useState("All");
+  const [editingId, setEditingId] = useState(null);
 
-  function addApplication(e) {
+  function resetForm() {
+    setEditingId(null);
+    setCompany("");
+    setRole("");
+    setStatus(APPLICATION_STATUSES[0]);
+    setDateApplied(todayString());
+    setNotes("");
+  }
+
+  function saveApplication(e) {
     e.preventDefault();
     if (!company.trim() || !role.trim()) return;
 
-    const newApp = {
-      id: Date.now(),
+    const appData = {
       company: company.trim(),
       role: role.trim(),
       status,
@@ -25,10 +34,27 @@ export default function Internships() {
       notes: notes.trim(),
     };
 
-    setApplications([newApp, ...applications]);
-    setCompany("");
-    setRole("");
-    setNotes("");
+    if (editingId) {
+      setApplications(
+        applications.map((a) =>
+          a.id === editingId ? { ...a, ...appData } : a
+        )
+      );
+    } else {
+      setApplications([{ id: Date.now(), ...appData }, ...applications]);
+    }
+
+    resetForm();
+  }
+
+  function startEdit(app) {
+    setEditingId(app.id);
+    setCompany(app.company);
+    setRole(app.role);
+    setStatus(app.status);
+    setDateApplied(app.dateApplied);
+    setNotes(app.notes || "");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function updateStatus(id, newStatus) {
@@ -39,6 +65,7 @@ export default function Internships() {
 
   function deleteApplication(id) {
     setApplications(applications.filter((a) => a.id !== id));
+    if (id === editingId) resetForm();
   }
 
   const visibleApps =
@@ -61,7 +88,7 @@ export default function Internships() {
         ))}
       </div>
 
-      <form className="task-form" onSubmit={addApplication}>
+      <form className="task-form" onSubmit={saveApplication}>
         <input
           type="text"
           placeholder="Company"
@@ -94,9 +121,16 @@ export default function Internships() {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
         />
+
         <button type="submit" className="btn">
-          + Add application
+          {editingId ? "Save changes" : "+ Add application"}
         </button>
+
+        {editingId && (
+          <button type="button" className="mini-btn" onClick={resetForm}>
+            Cancel
+          </button>
+        )}
       </form>
 
       <div className="filters">
@@ -142,9 +176,17 @@ export default function Internships() {
             </select>
 
             <button
+              className="edit-btn"
+              onClick={() => startEdit(a)}
+              aria-label={`Edit ${a.company}`}
+            >
+              Edit
+            </button>
+
+            <button
               className="delete"
               onClick={() => deleteApplication(a.id)}
-              aria-label="Delete application"
+              aria-label={`Delete ${a.company}`}
             >
               ✕
             </button>
