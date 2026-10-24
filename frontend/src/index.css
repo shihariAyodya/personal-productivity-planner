@@ -49,6 +49,7 @@ body {
 
 main {
   flex: 1;
+  min-width: 0;
   padding: 32px 40px;
 }
 
@@ -453,4 +454,136 @@ main {
 
 .section-title {
   margin-top: 32px;
+}
+
+.sidebar-top {
+  display: block;
+}
+
+.menu-btn {
+  display: none;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  /* Sidebar becomes a scrolling bar at the top */
+    .sidebar {
+    width: auto;
+    flex-direction: column;
+    gap: 0;
+    padding: 8px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .sidebar-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .app-name {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .menu-btn {
+    display: block;
+    min-width: 44px;
+    min-height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--rose-light);
+    padding: 8px 16px 16px;
+    box-shadow: 0 8px 16px rgba(61, 55, 53, 0.15);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  main {
+    padding: 20px 16px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  /* Forms: one field per row */
+  .task-form input,
+  .task-form select,
+  .task-form .btn {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 44px;
+  }
+
+  .task-form input[type="text"] {
+    min-width: 0;
+  }
+
+  /* Filters scroll sideways instead of wrapping */
+  .filters {
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .filter {
+    white-space: nowrap;
+  }
+
+  /* List rows wrap so nothing gets squeezed */
+  .task {
+    flex-wrap: wrap;
+  }
+
+  .task-main {
+    min-width: 0;
+    flex-basis: 60%;
+  }
+
+  .task-list {
+    padding: 4px 14px;
+  }
+
+  /* Bigger tap targets */
+  .delete {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .goal-buttons {
+    flex-wrap: wrap;
+  }
+
+  .chart {
+    gap: 4px;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
