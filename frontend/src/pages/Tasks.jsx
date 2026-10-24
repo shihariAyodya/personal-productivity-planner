@@ -10,22 +10,45 @@ export default function Tasks() {
   const [subtype, setSubtype] = useState(SHIZELLE_SUBTYPES[0]);
   const [date, setDate] = useState(todayString());
   const [filter, setFilter] = useState("All");
+  const [editingId, setEditingId] = useState(null);
 
-  function addTask(e) {
+  function resetForm() {
+    setEditingId(null);
+    setTitle("");
+    setCategory(CATEGORIES[0]);
+    setSubtype(SHIZELLE_SUBTYPES[0]);
+    setDate(todayString());
+  }
+
+  function saveTask(e) {
     e.preventDefault();
     if (!title.trim()) return;
 
-    const newTask = {
-      id: Date.now(),
+    const taskData = {
       title: title.trim(),
       category,
       subtype: category === "Shizelle" ? subtype : "",
       date,
-      done: false,
     };
 
-    setTasks([newTask, ...tasks]);
-    setTitle("");
+    if (editingId) {
+      setTasks(
+        tasks.map((t) => (t.id === editingId ? { ...t, ...taskData } : t))
+      );
+    } else {
+      setTasks([{ id: Date.now(), ...taskData, done: false }, ...tasks]);
+    }
+
+    resetForm();
+  }
+
+  function startEdit(task) {
+    setEditingId(task.id);
+    setTitle(task.title);
+    setCategory(task.category);
+    setSubtype(task.subtype || SHIZELLE_SUBTYPES[0]);
+    setDate(task.date);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function toggleTask(id) {
@@ -34,6 +57,7 @@ export default function Tasks() {
 
   function deleteTask(id) {
     setTasks(tasks.filter((t) => t.id !== id));
+    if (id === editingId) resetForm();
   }
 
   const visibleTasks =
@@ -43,7 +67,7 @@ export default function Tasks() {
     <div>
       <h1>Tasks</h1>
 
-      <form className="task-form" onSubmit={addTask}>
+      <form className="task-form" onSubmit={saveTask}>
         <input
           type="text"
           placeholder="What needs doing?"
@@ -77,8 +101,14 @@ export default function Tasks() {
         />
 
         <button type="submit" className="btn">
-          + Add task
+          {editingId ? "Save changes" : "+ Add task"}
         </button>
+
+        {editingId && (
+          <button type="button" className="mini-btn" onClick={resetForm}>
+            Cancel
+          </button>
+        )}
       </form>
 
       <div className="filters">
@@ -114,9 +144,16 @@ export default function Tasks() {
               {t.subtype && ` · ${t.subtype}`}
             </span>
             <button
+              className="edit-btn"
+              onClick={() => startEdit(t)}
+              aria-label={`Edit ${t.title}`}
+            >
+              Edit
+            </button>
+            <button
               className="delete"
               onClick={() => deleteTask(t.id)}
-              aria-label="Delete task"
+              aria-label={`Delete ${t.title}`}
             >
               ✕
             </button>

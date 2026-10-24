@@ -491,6 +491,22 @@ main {
   color: var(--rose-dark);
 }
 
+.edit-btn {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--ash-light);
+  border-radius: 10px;
+  background: var(--cream);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: var(--rose-light);
+}
+
 @media (max-width: 768px) {
   .layout {
     flex-direction: column;
