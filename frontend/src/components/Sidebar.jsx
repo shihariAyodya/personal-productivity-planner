@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const LINKS = [
-  { to: "/", label: "Dashboard" },
+  { to: "/dashboard", label: "Dashboard" },
   { to: "/daily", label: "Daily Plan" },
   { to: "/tasks", label: "Tasks" },
   { to: "/weekly", label: "Weekly Planner" },
@@ -15,7 +15,15 @@ export default function Sidebar() {
   return (
     <nav className="sidebar">
       <div className="sidebar-top">
-        <h2 className="app-name">Daily Planner</h2>
+        {/* App title links back to the landing page */}
+        <Link
+          to="/"
+          className="app-name-link"
+          onClick={() => setOpen(false)}
+          title="Return to welcome page"
+        >
+          <h2 className="app-name">Daily Planner</h2>
+        </Link>
         <button
           className="menu-btn"
           onClick={() => setOpen(!open)}
@@ -31,7 +39,7 @@ export default function Sidebar() {
           <NavLink
             key={link.to}
             to={link.to}
-            end={link.to === "/"}
+            end={link.to === "/dashboard"}
             onClick={() => setOpen(false)}
           >
             {link.label}

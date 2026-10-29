@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
+import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import DailyPlan from "./pages/DailyPlan";
 import Tasks from "./pages/Tasks";
@@ -10,23 +11,29 @@ import QuickAddButton from "./components/QuickAddButton";
 
 export default function App() {
   const location = useLocation();
+  // Landing page at "/" is full-screen without sidebar or quick-add button
+  const isLanding = location.pathname === "/";
 
   return (
     <ToastProvider>
-      <div className="layout">
-        <Sidebar />
-        {/* key ensures a gentle fade-in animation triggers when changing pages */}
-        <main key={location.pathname} className="main-content page-enter">
+      <div className={isLanding ? "landing-page-wrap" : "layout"}>
+        {!isLanding && <Sidebar />}
+
+        <main
+          key={location.pathname}
+          className={isLanding ? "landing-main page-enter" : "main-content page-enter"}
+        >
           <Routes location={location}>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/daily" element={<DailyPlan />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/weekly" element={<WeeklyPlanner />} />
             <Route path="/internships" element={<Internships />} />
           </Routes>
         </main>
-        {/* Floating Quick Add button on mobile and desktop 'N' shortcut */}
-        <QuickAddButton />
+
+        {!isLanding && <QuickAddButton />}
       </div>
     </ToastProvider>
   );
