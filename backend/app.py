@@ -10,6 +10,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 CATEGORIES = ["University", "Career", "Shizelle"]
+STATUSES = ["Applied", "Interview", "Offer", "Rejected"]
 
 
 class Task(db.Model):
@@ -31,6 +32,37 @@ class Task(db.Model):
         }
 
 
+class DailyLog(db.Model):
+    date = db.Column(db.String(10), primary_key=True)  # YYYY-MM-DD
+    study_minutes = db.Column(db.Integer, default=0)
+    crochet_minutes = db.Column(db.Integer, default=0)
+
+    def to_dict(self):
+        return {
+            "studyMinutes": self.study_minutes,
+            "crochetMinutes": self.crochet_minutes,
+        }
+
+
+class Application(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    company = db.Column(db.String(200), nullable=False)
+    role = db.Column(db.String(200), nullable=False)
+    status = db.Column(db.String(20), nullable=False, default="Applied")
+    date_applied = db.Column(db.String(10), nullable=False)
+    notes = db.Column(db.String(500), default="")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "company": self.company,
+            "role": self.role,
+            "status": self.status,
+            "dateApplied": self.date_applied,
+            "notes": self.notes or "",
+        }
+
+
 with app.app_context():
     db.create_all()
 
@@ -38,6 +70,9 @@ with app.app_context():
 @app.route("/api/health")
 def health():
     return jsonify({"status": "ok"})
+
+
+# ---------- Tasks ----------
 
 
 @app.route("/api/tasks", methods=["GET"])
@@ -103,5 +138,21 @@ def delete_task(task_id):
     return jsonify({"deleted": task_id})
 
 
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+# ---------- Daily logs ----------
+
+
+@app.route("/api/logs", methods=["GET"])
+def list_logs():
+    logs = DailyLog.query.all()
+    return jsonify({log.date: log.to_dict() for log in logs})
+
+
+@app.route("/api/logs/<date>", methods=["PUT"])
+def save_log(date):
+    data = request.get_json(silent=True) or {}
+    try:
+        study = max(0, int(data.get("studyMinutes", 0)))
+        crochet = max(0, int(data.get("crochetMinutes", 0)))
+    except (TypeError, ValueError):
+                return jsonify({"error": "Minutes must be
+numbers"}), 400
