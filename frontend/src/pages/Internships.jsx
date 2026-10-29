@@ -1,5 +1,7 @@
 import { useState } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { useToast } from "../components/Toast";
+import EmptyState from "../components/EmptyState";
 import { APPLICATION_STATUSES } from "../utils/constants";
 import { todayString } from "../utils/dates";
 
@@ -12,6 +14,7 @@ export default function Internships() {
   const [notes, setNotes] = useState("");
   const [filter, setFilter] = useState("All");
   const [editingId, setEditingId] = useState(null);
+  const { showToast } = useToast();
 
   function resetForm() {
     setEditingId(null);
@@ -40,8 +43,10 @@ export default function Internships() {
           a.id === editingId ? { ...a, ...appData } : a
         )
       );
+      showToast("Application updated");
     } else {
       setApplications([{ id: Date.now(), ...appData }, ...applications]);
+      showToast("Application added");
     }
 
     resetForm();
@@ -61,11 +66,23 @@ export default function Internships() {
     setApplications(
       applications.map((a) => (a.id === id ? { ...a, status: newStatus } : a))
     );
+    showToast(`Status updated to ${newStatus}`);
   }
 
   function deleteApplication(id) {
+    const appToDelete = applications.find((a) => a.id === id);
+    const originalApps = applications;
     setApplications(applications.filter((a) => a.id !== id));
     if (id === editingId) resetForm();
+
+    showToast({
+      message: `Deleted "${appToDelete?.company || "Application"}"`,
+      actionLabel: "Undo",
+      onAction: () => {
+        setApplications(originalApps);
+        showToast("Application restored");
+      },
+    });
   }
 
   const visibleApps =
@@ -146,52 +163,71 @@ export default function Internships() {
       </div>
 
       <div className="task-list">
-        {visibleApps.length === 0 && (
-          <p className="empty">No applications here yet.</p>
-        )}
+        {visibleApps.length === 0 ? (
+          filter !== "All" ? (
+            <EmptyState
+              icon="🔍"
+              title={`No ${filter} applications`}
+              message="There are no applications matching this status filter."
+              actionLabel="Show all applications"
+              onAction={() => setFilter("All")}
+            />
+          ) : (
+            <EmptyState
+              icon="💼"
+              title="No applications tracked yet"
+              message="Keep track of companies, roles, interviews, and offers in one place."
+              actionLabel="+ Add an application"
+              onAction={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                document.querySelector('.task-form input[type="text"]')?.focus();
+              }}
+            />
+          )
+        ) : (
+          visibleApps.map((a) => (
+            <div key={a.id} className="task">
+              <div className="task-main">
+                <span className="task-title">
+                  {a.company} · {a.role}
+                </span>
+                <span className="task-date">
+                  Applied {a.dateApplied}
+                  {a.notes && ` · ${a.notes}`}
+                </span>
+              </div>
 
-        {visibleApps.map((a) => (
-          <div key={a.id} className="task">
-            <div className="task-main">
-              <span className="task-title">
-                {a.company} · {a.role}
-              </span>
-              <span className="task-date">
-                Applied {a.dateApplied}
-                {a.notes && ` · ${a.notes}`}
-              </span>
+              <select
+                className={`status-select status-${a.status.toLowerCase()}`}
+                value={a.status}
+                onChange={(e) => updateStatus(a.id, e.target.value)}
+                aria-label={`Status for ${a.company}`}
+              >
+                {APPLICATION_STATUSES.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                className="edit-btn"
+                onClick={() => startEdit(a)}
+                aria-label={`Edit ${a.company}`}
+              >
+                Edit
+              </button>
+
+              <button
+                className="delete"
+                onClick={() => deleteApplication(a.id)}
+                aria-label={`Delete ${a.company}`}
+              >
+                ✕
+              </button>
             </div>
-
-            <select
-              className={`status-select status-${a.status.toLowerCase()}`}
-              value={a.status}
-              onChange={(e) => updateStatus(a.id, e.target.value)}
-              aria-label={`Status for ${a.company}`}
-            >
-              {APPLICATION_STATUSES.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-
-            <button
-              className="edit-btn"
-              onClick={() => startEdit(a)}
-              aria-label={`Edit ${a.company}`}
-            >
-              Edit
-            </button>
-
-            <button
-              className="delete"
-              onClick={() => deleteApplication(a.id)}
-              aria-label={`Delete ${a.company}`}
-            >
-              ✕
-            </button>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
