@@ -124,7 +124,7 @@ export default function Dashboard() {
       <div className="goal-card chart-card">
         <div className="goal-label">Study time per day</div>
         <div className="chart">
-          {weekData.map((d) => {
+          {weekData.map((d, index) => {
             const percent = Math.min(100, (d.study / STUDY_TARGET_MIN) * 100);
             return (
               <div
@@ -132,9 +132,13 @@ export default function Dashboard() {
                 className={d.dateStr === today ? "chart-col today" : "chart-col"}
               >
                 <div className="chart-track">
+                  {/* Staggered delay so bars rise from bottom one after another */}
                   <div
                     className="chart-bar"
-                    style={{ height: `${Math.max(4, percent)}px` }}
+                    style={{
+                      height: `${Math.max(4, percent)}px`,
+                      animationDelay: `${index * 0.08}s`,
+                    }}
                   />
                 </div>
                 <span>{d.label}</span>

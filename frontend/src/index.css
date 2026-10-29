@@ -882,12 +882,33 @@ input[type="checkbox"]:checked::after {
   justify-content: center;
 }
 
+/* Weekly chart bars rising from the bottom */
+@keyframes growBar {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
 .chart-bar {
   width: 100%;
   max-width: 44px;
   background: var(--rose);
   border-radius: 8px 8px 0 0;
+  transform-origin: bottom;
+  animation: growBar 0.8s ease-out backwards;
 }
+
+/* Stagger weekly chart bars so they rise one after another */
+.chart-col:nth-child(1) .chart-bar { animation-delay: 0.05s; }
+.chart-col:nth-child(2) .chart-bar { animation-delay: 0.12s; }
+.chart-col:nth-child(3) .chart-bar { animation-delay: 0.19s; }
+.chart-col:nth-child(4) .chart-bar { animation-delay: 0.26s; }
+.chart-col:nth-child(5) .chart-bar { animation-delay: 0.33s; }
+.chart-col:nth-child(6) .chart-bar { animation-delay: 0.40s; }
+.chart-col:nth-child(7) .chart-bar { animation-delay: 0.47s; }
 
 .chart-col.today .chart-bar {
   background: var(--rose-dark);
@@ -961,10 +982,22 @@ input[type="checkbox"]:checked::after {
   overflow: hidden;
 }
 
+/* Progress bar fill animation scaling from 0 to 1 from the left */
+@keyframes fillBar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 .bar-fill {
   height: 100%;
   border-radius: 6px;
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left;
+  animation: fillBar 1.2s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  transition: width 0.4s ease;
 }
 
 .goal-buttons {
@@ -998,10 +1031,6 @@ input[type="checkbox"]:checked::after {
 .section-title {
   font-size: 18px;
   margin: 32px 0 12px;
-}
-
-.section-title {
-  margin-top: 32px;
 }
 
 .sidebar-top {
